@@ -3,11 +3,13 @@
 import { Alert } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { AlertTriangle, Wrench, Navigation, Info, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { AlertTriangle, Wrench, Navigation, Info, AlertCircle, Settings } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface AlertsPanelProps {
   alerts: Alert[];
+  onConfigureNotifications?: () => void;
 }
 
 const alertConfig = {
@@ -50,19 +52,33 @@ const priorityConfig = {
   baixa: { label: 'Baixa', color: 'bg-blue-600' }
 };
 
-export function AlertsPanel({ alerts }: AlertsPanelProps) {
+export function AlertsPanel({ alerts, onConfigureNotifications }: AlertsPanelProps) {
   const alertsNaoLidas = alerts.filter(a => !a.lida);
 
   return (
     <Card className="p-4 sm:p-6 border-gray-200 dark:border-gray-800">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-          Alertas Ativos
-        </h2>
-        {alertsNaoLidas.length > 0 && (
-          <Badge className="bg-red-600 text-white border-0">
-            {alertsNaoLidas.length} novos
-          </Badge>
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+            Alertas Ativos
+          </h2>
+          {alertsNaoLidas.length > 0 && (
+            <Badge className="bg-red-600 text-white border-0">
+              {alertsNaoLidas.length} novos
+            </Badge>
+          )}
+        </div>
+        
+        {onConfigureNotifications && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onConfigureNotifications}
+            className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            title="Configurar Notificações"
+          >
+            <Settings className="w-4 h-4" />
+          </Button>
         )}
       </div>
 
